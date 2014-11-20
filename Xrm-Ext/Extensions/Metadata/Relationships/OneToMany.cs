@@ -48,6 +48,13 @@ namespace Xrm_Ext.Extensions.Metadata.Relationships
                                                         MinimalRelationshipInformation info)
         {
 
+            if(info == null)
+                throw new InvalidOperationException("Relationship information must be not null");
+
+            if (string.IsNullOrWhiteSpace(info.ReferencedEntityLogicalName) ||
+                string.IsNullOrWhiteSpace(info.ReferencingEntityLogicalName))
+                throw new InvalidOperationException("The referenced and referencing entities can't be empty");
+
             CreateOneToManyRequest createOneToManyRelationshipRequest =
                             new CreateOneToManyRequest
                         {
