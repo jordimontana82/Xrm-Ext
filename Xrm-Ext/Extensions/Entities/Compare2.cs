@@ -29,7 +29,7 @@ using System.Text;
 using Microsoft.Xrm.Sdk;
 
 
-namespace Xrm_Ext.Extensions
+namespace Xrm_Ext.Extensions.Entities
 {
     /// <summary>
     /// This class contains extension methods to compare two Entity records.
