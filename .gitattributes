@@ -3,6 +3,11 @@
 ###############################################################################
 * text=auto
 
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+###############################################
+*.cs eol=crlf
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
