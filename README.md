@@ -3,6 +3,8 @@ Xrm-Ext
 
 Collection of extension methods for Dynamics CRM.
 
+This is a work in progress.
+
 Compare2: Compares two entity records to know if they have different attribute values.
 
 Usage
