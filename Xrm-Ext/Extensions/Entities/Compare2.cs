@@ -97,33 +97,32 @@ namespace Xrm_Ext.Extensions.Entities
 
             //Then, specific comparison depending on the data type:
 
-            switch (v1.GetType().ToString())
-            {
-                case "EntityReference":
+            if(v1 is EntityReference) {
                     if (!(v2 is EntityReference)) return false; //The other value is not an entity reference, so they are indeed different
 
                     return (v1 as EntityReference).Id == (v2 as EntityReference).Id;
-
-                case "System.Bool":
+            }
+            else if(v1 is bool) {
                     if (!(v2 is bool)) return false; //The other value is not a bool type, so they are different
 
                     return (bool)v1 == (bool)v2;
-
-                case "OptionSetValue":
+            }
+            else if(v1 is OptionSetValue) {
                     if (!(v2 is OptionSetValue)) return false;
 
                     return (v1 as OptionSetValue).Value == (v2 as OptionSetValue).Value; //value changed if the int values are different
-
-                case "System.Single":
+            }
+            else if(v1 is float) {
                     if (!(v2 is float)) return false; //The other value is not a float type, so they are different
 
                     return (float)v1 == (float)v2;
-
-                case "System.Double":
+            }
+            else if(v1 is double) {
                     if (!(v2 is double)) return false; //The other value is not a float type, so they are different
 
                     return (double)v1 == (double)v2;
-                default:
+            }
+            else {
                     //Comparison using strings
                     return string.Equals(v1.ToString(), v2.ToString()); //value changed if the values are different
 

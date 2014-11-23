@@ -313,5 +313,117 @@ namespace Xrm_Ext.Tests
 
             Assert.False(e1.IsEqualTo(e2), "2 Entities with the 2 attributes, one different, were equal");
         }
+
+        [Fact]
+        public void Two_entities_with_an_entity_reference_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = new EntityReference();
+            e2["primarycontactid"] = 1;
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_an_integer_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = 1;
+            e2["primarycontactid"] = 123.4f;
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_a_bool_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = true;
+            e2["primarycontactid"] = 123.4f;
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_a_float_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = 123.4f;
+            e2["primarycontactid"] = false;
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_a_string_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = "yeah amazing test";
+            e2["primarycontactid"] = 3456789;
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_a_double_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["primarycontactid"] = 2345.34;
+            e2["primarycontactid"] = "jaaaarl";
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_an_optionsetvalue_attribute_and_anything_else_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["statuscode"] = new OptionSetValue();
+            e2["statuscode"] = "other different thing";
+
+            Assert.False(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_the_same_entity_reference_are_equal()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            var g = Guid.NewGuid();
+
+            e1["primarycontactid"] = new EntityReference() { Id = g };
+            e2["primarycontactid"] = new EntityReference() { Id = g };
+
+            Assert.True(e1.IsEqualTo(e2));
+        }
+
+        [Fact]
+        public void Two_entities_with_the_same_optionsetvalue_are_equal()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            var value = 60;
+
+            e1["statuscode"] = new OptionSetValue() { Value = value };
+            e2["statuscode"] = new OptionSetValue() { Value = value };
+
+            Assert.True(e1.IsEqualTo(e2));
+        }
     }
 }
