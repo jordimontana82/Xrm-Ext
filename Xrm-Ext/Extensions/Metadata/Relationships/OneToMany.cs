@@ -63,7 +63,7 @@ namespace Xrm_Ext.Extensions.Metadata.Relationships
                             {
                                 ReferencedEntity = info.ReferencedEntityLogicalName,
                                 ReferencingEntity = info.ReferencingEntityLogicalName,
-                                SchemaName = info.GetRelationshipSchemaName(),
+                                SchemaName = info.GetOneToManyRelationshipSchemaName(),
                                 AssociatedMenuConfiguration = new AssociatedMenuConfiguration
                                 {
                                     Behavior = AssociatedMenuBehavior.UseCollectionName,

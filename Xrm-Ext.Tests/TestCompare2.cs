@@ -23,47 +23,83 @@ SOFTWARE.
  
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Xrm_Ext.Extensions;
+using Xrm_Ext.Extensions.Entities;
+using Xunit;
 
 namespace Xrm_Ext.Tests
 {
-    [TestClass]
     public class TestCompare2
     {
-        [TestMethod]
+        
+        [Fact]
         public void OneNullEntityAndOneNonNullEntityMustBeDifferent()
         {
             Entity e1 = null;
             Entity e2 = new Entity();
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "A null entity must not be equal to a non null entity");
+            Assert.False(e2.IsEqualTo(e1), "A null entity must not be equal to a non null entity");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckNotEqualLogicalNames()
         {
             Entity e1 = new Entity("logicalName1");
             Entity e2 = new Entity("");
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with different logical names were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with different logical names were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckEqualLogicalNames()
         {
             Entity e1 = new Entity("logicalName1");
             Entity e2 = new Entity("logicalName1");
 
-            Assert.IsTrue(e2.IsEqualTo(e1), "Failed: 2 Entities with equal logical names and no attributes weren't equal");
+            Assert.True(e2.IsEqualTo(e1), "Failed: 2 Entities with equal logical names and no attributes weren't equal");
         }
 
-        [TestMethod]
+        [Fact]
+        public void Two_entities_with_the_same_null_attribute_are_equal()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["name"] = null;
+            e2["name"] = null;
+
+            Assert.True(e2.IsEqualTo(e1));
+        }
+
+        [Fact]
+        public void Two_entities_with_the_same_attribute_not_null_and_null_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["name"] = "Account name";
+            e2["name"] = null;
+
+            Assert.False(e2.IsEqualTo(e1));
+        }
+
+        [Fact]
+        public void Two_entities_with_the_same_attribute_null_and_not_null_are_different()
+        {
+            Entity e1 = new Entity("account");
+            Entity e2 = new Entity("account");
+
+            e1["name"] = null;
+            e2["name"] = "Anything else man!";
+
+            Assert.False(e2.IsEqualTo(e1));
+        }
+
+        [Fact]
         public void CheckDifferentAttributeNumberInThisEntity()
         {
             Entity e1 = new Entity("logicalName1");
@@ -72,10 +108,10 @@ namespace Xrm_Ext.Tests
             e1["attribute"] = 1;
             //e2 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with different number of attributes were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with different number of attributes were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDifferentAttributeNumberInOtherEntity()
         {
             Entity e1 = new Entity("logicalName1");
@@ -84,10 +120,10 @@ namespace Xrm_Ext.Tests
             e2["attribute"] = 1;
             //e1 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with different number of attributes were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with different number of attributes were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckSameAttributesWithDifferentNames()
         {
             Entity e1 = new Entity("logicalName1");
@@ -97,10 +133,10 @@ namespace Xrm_Ext.Tests
             e2["othername"] = 1;
             //e1 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with exactly the same number of attributes but different attribute names were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with exactly the same number of attributes but different attribute names were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchBool()
         {
             Entity e1 = new Entity("logicalName1");
@@ -110,10 +146,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = true;
             //e1 has no attributes
 
-            Assert.IsTrue(e2.IsEqualTo(e1), "Failed: 2 Entities with just one bool attribute with the same name and value for both were different");
+            Assert.True(e2.IsEqualTo(e1), "Failed: 2 Entities with just one bool attribute with the same name and value for both were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchBoolDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -123,10 +159,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = false;
             //e1 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with just one bool attribute with the same name and different value were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with just one bool attribute with the same name and different value were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchInteger()
         {
             Entity e1 = new Entity("logicalName1");
@@ -136,10 +172,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1;
             //e1 has no attributes
 
-            Assert.IsTrue(e2.IsEqualTo(e1), "Failed: 2 Entities with just one int attribute with the same name and value for both were different");
+            Assert.True(e2.IsEqualTo(e1), "Failed: 2 Entities with just one int attribute with the same name and value for both were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchIntegerDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -149,10 +185,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1234;
             //e1 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with just one int attribute with the same name and different value for both were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with just one int attribute with the same name and different value for both were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchFloat()
         {
             Entity e1 = new Entity("logicalName1");
@@ -162,10 +198,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1.123f;
             //e1 has no attributes
 
-            Assert.IsTrue(e2.IsEqualTo(e1), "Failed: 2 Entities with just one float attribute with the same name and value for both were different");
+            Assert.True(e2.IsEqualTo(e1), "Failed: 2 Entities with just one float attribute with the same name and value for both were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchFloatDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -175,11 +211,11 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1.1234f;
             //e1 has no attributes
 
-            Assert.IsFalse(e2.IsEqualTo(e1), "Failed: 2 Entities with just one float attribute with the same name and different value for both were equal");
+            Assert.False(e2.IsEqualTo(e1), "Failed: 2 Entities with just one float attribute with the same name and different value for both were equal");
 
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchDouble()
         {
             Entity e1 = new Entity("logicalName1");
@@ -189,10 +225,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1.123456;
             //e1 has no attributes
 
-            Assert.IsTrue(e1.IsEqualTo(e2), "2 Entities with just one double attribute with the same name and value for both were different");
+            Assert.True(e1.IsEqualTo(e2), "2 Entities with just one double attribute with the same name and value for both were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDifferentDoubleAttributeValuesAreDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -202,10 +238,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 13212.234;
             //e1 has no attributes
 
-            Assert.IsFalse(e1.IsEqualTo(e2), "2 Entities with just one double attribute with the same name and different value for both were equal");
+            Assert.False(e1.IsEqualTo(e2), "2 Entities with just one double attribute with the same name and different value for both were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckAttributeValueMatchDecimal()
         {
             Entity e1 = new Entity("logicalName1");
@@ -215,10 +251,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1.123456m;
             //e1 has no attributes
 
-            Assert.IsTrue(e1.IsEqualTo(e2), "2 Entities with just one decimal attribute with the same name and value for both were different");
+            Assert.True(e1.IsEqualTo(e2), "2 Entities with just one decimal attribute with the same name and value for both were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDifferentDecimalAttributeValuesAreDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -228,10 +264,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 13212.234m;
             //e1 has no attributes
 
-            Assert.IsFalse(e1.IsEqualTo(e2), "2 Entities with just one decimal attribute with the same name and different value for both were equal");
+            Assert.False(e1.IsEqualTo(e2), "2 Entities with just one decimal attribute with the same name and different value for both were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTwoEntitiesWithOneAttributeWithDifferentDataTypesAreDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -241,10 +277,10 @@ namespace Xrm_Ext.Tests
             e2["attribute1"] = 1.0f; //float
             //e1 has no attributes
 
-            Assert.IsFalse(e1.IsEqualTo(e2), "2 Entities with just one int and float attribute with the same value but different types were equal");
+            Assert.False(e1.IsEqualTo(e2), "2 Entities with just one int and float attribute with the same value but different types were equal");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTwoEntitiesWithTwoAttributesWithSameValuesAreEqual()
         {
             Entity e1 = new Entity("logicalName1");
@@ -258,10 +294,10 @@ namespace Xrm_Ext.Tests
 
             //e1 has no attributes
 
-            Assert.IsTrue(e1.IsEqualTo(e2), "2 Entities with the 2 same attribute values were different");
+            Assert.True(e1.IsEqualTo(e2), "2 Entities with the 2 same attribute values were different");
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckTwoEntitiesWithTwoAttributesWithOneDifferentValuesAreDifferent()
         {
             Entity e1 = new Entity("logicalName1");
@@ -275,7 +311,7 @@ namespace Xrm_Ext.Tests
 
             //e1 has no attributes
 
-            Assert.IsFalse(e1.IsEqualTo(e2), "2 Entities with the 2 attributes, one different, were equal");
+            Assert.False(e1.IsEqualTo(e2), "2 Entities with the 2 attributes, one different, were equal");
         }
     }
 }

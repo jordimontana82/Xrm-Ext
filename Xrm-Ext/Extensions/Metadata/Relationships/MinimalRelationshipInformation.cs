@@ -44,14 +44,14 @@ namespace Xrm_Ext.Extensions.Metadata.Relationships
         public string GetLookupFieldName()
         {
             if (string.IsNullOrWhiteSpace(LookupFieldName))
-                return PublisherPrefix + "_" + ReferencedEntityLogicalName + "id";
+                return PublisherPrefix + ReferencedEntityLogicalName + "id";
 
             return LookupFieldName;
         }
 
-        public string GetRelationshipSchemaName()
+        public string GetOneToManyRelationshipSchemaName()
         {
-            return PublisherPrefix + "_" + ReferencedEntityLogicalName + "_" + ReferencingEntityLogicalName;
+            return PublisherPrefix + ReferencedEntityLogicalName + "_" + ReferencingEntityLogicalName;
         }
     }
 }
