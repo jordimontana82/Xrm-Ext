@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Entities\Clone.cs" />
     <Compile Include="Extensions\Entities\Compare2.cs" />
     <Compile Include="Extensions\Metadata\Relationships\MinimalRelationshipInformation.cs" />
     <Compile Include="Extensions\Metadata\Relationships\OneToMany.cs" />
