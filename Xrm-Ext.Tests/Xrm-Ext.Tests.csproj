@@ -63,6 +63,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Extensions\Entities\TestCloneHierarchy.cs" />
     <Compile Include="Extensions\Entities\TestsClone.cs" />
     <Compile Include="Extensions\Metadata\TestsMinimumRelationshipInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
